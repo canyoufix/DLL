@@ -2,27 +2,23 @@
 #include "pch.h"
 #include <stdio.h>
 
-BOOL APIENTRY DllMain( HMODULE hModule,
-                       DWORD  ul_reason_for_call,
-                       LPVOID lpReserved
-                     )
+BOOL APIENTRY DllMain(HMODULE hModule,
+	DWORD  ul_reason_for_call,
+	LPVOID lpReserved
+)
 {
 	switch (ul_reason_for_call)
 	{
 	case DLL_PROCESS_ATTACH:
-		MessageBox(NULL, L"DLL загружена.", L"Антибаг-фича", MB_OK);
 		break;
 	case DLL_THREAD_ATTACH:
-		MessageBox(NULL, L"Процесс создал новый поток.", L"Антибаг-фича", MB_OK);
 		break;
 	case DLL_THREAD_DETACH:
-		MessageBox(NULL, L"Поток завершился, всё ок.", L"Антибаг-фича", MB_OK);
 		break;
 	case DLL_PROCESS_DETACH:
-		MessageBox(NULL, L"DLL выгружена.", L"Антибаг-фича", MB_OK);
 		break;
 	}
-    return TRUE;
+	return TRUE;
 }
 
 INT changeBuffer(CHAR Buffer[], DWORD& nIn, INT numFromCMD) {
