@@ -2,10 +2,7 @@
 #include "pch.h"
 #include <stdio.h>
 
-BOOL APIENTRY DllMain(HMODULE hModule,
-	DWORD  ul_reason_for_call,
-	LPVOID lpReserved
-)
+BOOL APIENTRY DllMain(HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpReserved)
 {
 	switch (ul_reason_for_call)
 	{
@@ -21,39 +18,36 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 	return TRUE;
 }
 
-INT changeBuffer(CHAR Buffer[], DWORD& nIn, INT numFromCMD) {
-	INT numOfNum = 0, index = 0;
+INT changeBuffer(CHAR Buffer[], DWORD* nIn, INT numFromCMD) {
+	INT countNum = 0, numOfReplace = 0, i = 0;
 
-	while (index < nIn) { //Количество цифр во всем буффере
-		if (Buffer[index] >= '0' && Buffer[index] <= '9') {
-			numOfNum++;
-		}
-		index++;
+	while (i < (*nIn)) { //Количество цифр во всем буффере
+		if (Buffer[i] >= '0' && Buffer[i] <= '9')	countNum++;
+		i++;
 	}
 
-	if (numOfNum == 0 || numFromCMD <= 0) { //Проверка количества введнных цифр
-		printf("Нельзя заменено 0 цифр(ы), либо в документе они отсутствуют.\n");
+	if (countNum == 0 || numFromCMD <= 0) { //Проверка количества введенных цифр
+		printf("Ошибка ввода.\n");
 		return -1;
 	}
-	if (numOfNum >= numFromCMD) {
+
+	if (countNum >= numFromCMD) {
 		printf("Будет заменено %d цифр(ы).\n", numFromCMD);
 	}
 	else {
-		printf("Во всем документе %d цифр(ы), а не %d, поэтому будут заменены все.\n\n", numOfNum, numFromCMD);
-		numFromCMD = numOfNum;
+		printf("Слишком большое значение, будут заменены все числа.\n");
+		numFromCMD = countNum;
 	}
 
-	index = 0;
-	INT numOfReplace = 0;
-	while (index < nIn) {
-		if (Buffer[index] >= '0' && Buffer[index] <= '9') {
-			Buffer[index] = ' ';
+	i = 0;
+	while (i < (*nIn)) {
+		if (Buffer[i] >= '0' && Buffer[i] <= '9') {
+			Buffer[i] = ' ';
 			numOfReplace++;
-			if (numOfReplace == numFromCMD) {
-				index = nIn;
-			}
+
+			if (numOfReplace == numFromCMD) i = (*nIn) - 1;
 		}
-		index++;
+		i++;
 	}
 
 	return numOfReplace;
